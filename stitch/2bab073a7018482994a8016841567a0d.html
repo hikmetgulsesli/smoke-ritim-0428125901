@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smoke Ritim - Bir Sorun Oluştu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffeefb",
+                    "on-primary-container": "#002150",
+                    "secondary-fixed": "#65e1ff",
+                    "surface-bright": "#eff8fe",
+                    "surface-container": "#dfeaf1",
+                    "tertiary-dim": "#7b2f85",
+                    "tertiary-fixed-dim": "#e28ce9",
+                    "surface-variant": "#d1dfe7",
+                    "primary": "#0057bd",
+                    "error": "#b31b25",
+                    "primary-fixed": "#6e9fff",
+                    "tertiary": "#893c92",
+                    "error-dim": "#9f0519",
+                    "tertiary-container": "#f199f7",
+                    "on-secondary-fixed": "#003a45",
+                    "secondary": "#006576",
+                    "primary-fixed-dim": "#5391ff",
+                    "inverse-surface": "#070f13",
+                    "on-background": "#273034",
+                    "primary-container": "#6e9fff",
+                    "on-tertiary-fixed-variant": "#681c73",
+                    "background": "#eff8fe",
+                    "on-tertiary-fixed": "#3e0047",
+                    "on-primary-fixed": "#000000",
+                    "error-container": "#fb5151",
+                    "secondary-dim": "#005867",
+                    "outline-variant": "#a5aeb4",
+                    "primary-dim": "#004ca6",
+                    "on-error": "#ffefee",
+                    "outline": "#6f787d",
+                    "tertiary-fixed": "#f199f7",
+                    "surface": "#eff8fe",
+                    "surface-container-highest": "#d1dfe7",
+                    "on-surface": "#273034",
+                    "on-tertiary-container": "#5e106a",
+                    "inverse-on-surface": "#959ea4",
+                    "on-secondary-fixed-variant": "#005969",
+                    "surface-tint": "#0057bd",
+                    "surface-container-low": "#e8f2f9",
+                    "surface-container-high": "#d8e4ec",
+                    "secondary-container": "#65e1ff",
+                    "on-secondary-container": "#004f5d",
+                    "on-surface-variant": "#545d62",
+                    "surface-dim": "#c8d7df",
+                    "on-error-container": "#570008",
+                    "secondary-fixed-dim": "#48d4f3",
+                    "on-primary-fixed-variant": "#002a62",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#4d8eff",
+                    "on-secondary": "#def7ff",
+                    "on-primary": "#f0f2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "display": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            },
+            "fontSize": {
+                "display-lg": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.02em", fontWeight: "900" }],
+                "headline-lg": ["2rem", { lineHeight: "2.5rem", letterSpacing: "-0.01em", fontWeight: "800" }],
+                "body-md": ["0.875rem", { lineHeight: "1.25rem", fontWeight: "400" }],
+                "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.05em", fontWeight: "700" }]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center p-6 bg-background relative overflow-hidden">
+<!-- Ambient Background Elements -->
+<div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-error/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Error Card -->
+<main class="w-full max-w-lg bg-surface-container-lowest rounded-xl p-10 md:p-14 flex flex-col items-center text-center z-10">
+<!-- Icon Container -->
+<div class="w-24 h-24 rounded-full bg-error-container/10 flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-[48px] text-error" data-icon="error" data-weight="fill" style="font-variation-settings: 'FILL' 1;">
+                error
+            </span>
+</div>
+<!-- Typography -->
+<h1 class="text-headline-lg text-on-surface mb-4 tracking-tight">Bir Sorun Oluştu</h1>
+<p class="text-body-md text-on-surface-variant mb-10 max-w-sm leading-relaxed">
+            Verileriniz kaydedilemedi. Lütfen tarayıcı ayarlarınızı kontrol edin veya sayfayı yenileyin.
+        </p>
+<!-- Actions -->
+<button class="w-full sm:w-auto px-10 py-5 rounded-xl bg-gradient-to-br from-primary to-primary-container text-on-primary text-label-md uppercase tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">
+                refresh
+            </span>
+            Tekrar Dene
+        </button>
+</main>
+</body></html>

@@ -1,0 +1,222 @@
+# Smoke Ritim — Ürün Gereksinimleri Dokümanı (PRD)
+
+## 1. Genel Bakış
+
+Smoke Ritim, sigara bırakma ve sağlıklı alışkanlık kazanımı sürecini destekleyen tek sayfalık mikro bir alışkanlık takip uygulamasıdır. Kullanıcılar günlük hedeflerini (örneğin "Bugün sigara içmedim", "2 litre su içtim") ekleyebilir, tamamladıklarında işaretleyebilir ve ardışık gün sayılarını (streak) takip edebilir. Uygulama Stitch karakterinin eğlenceli, samimi ve ilham verici estetiğine sadık kalınarak tasarlanmıştır. Arayüz tamamen Türkçe'dir ve mobil cihazlardan masaüstüne kadar tüm ekran boyutlarında sorunsuz çalışır. Hedef kitle: sigara bırakma sürecinde olan veya sağlıklı rutinler oluşturmak isteyen 18-45 yaş arası Türkçe konuşan kullanıcılar.
+
+## 2. Hedefler
+
+1. Kullanıcının anlık motivasyonunu artırmak için görsel streak (ardışık gün) sayacı sunmak.
+2. Sadece tek sayfada, hiçbir sayfa geçişi olmadan tüm CRUD operasyonlarını gerçekleştirmek.
+3. localStorage kullanarak veriyi tarayıcıda kalıcı tutmak; internet bağlantısı olmadan çalışmak.
+4. Stitch'in mavi-turkuaz renk paleti ve yuvarlak, sevimli bileşen estetiğine sadık kalarak duygusal bir bağ kurmak.
+5. Erişilebilirlik standartlarına (WCAG 2.1 AA) tam uyum sağlamak; klavye navigasyonu ve ekran okuyucu desteği aktif olmak.
+6. İlk yükleme süresini 2 saniyenin altında tutmak; hafif bundle boyutu ile anlık etkileşim sunmak.
+
+## 3. Tech Stack Detayı
+
+- **Framework:** React 18 (Functional Components + Hooks)
+- **Build Tool:** Vite 5 (HMR, hızlı build, optimize edilmiş bundle)
+- **Dil:** TypeScript 5 (strict mode, explicit tipler)
+- **Styling:** Tailwind CSS 3.4 (utility-first, responsive grid/flex)
+- **State Management:** React useState + useReducer (karmaşık local state için reducer pattern)
+- **Storage:** Browser localStorage (JSON serialize/deserialize)
+- **Icons:** Lucide React (NEVER emoji; tüm ikonlar Lucide'dan)
+- **Lint/Format:** ESLint + Prettier
+- **Routing:** Yok (tek sayfalık uygulama; React Router gerekmez)
+
+## 4. Fonksiyonel Gereksinimler
+
+### 4.1 Alışkanlık Ekleme
+- Kullanıcı bir metin input'u aracılığıyla yeni alışkanlık adı girer.
+- Zorunlu alan: "Alışkanlık adı" (min 1, max 50 karakter).
+- Hata mesajı (Türkçe): "Lütfen bir alışkanlık adı girin."
+- Maksimum karakter aşımında: "Alışkanlık adı 50 karakteri geçemez."
+- Ekle butonuna tıklandığında alışkanlık kartı listeye eklenir; input temizlenir.
+- Varsayılan başlangıç: streak = 0, son tamamlanma tarihi = null.
+
+### 4.2 Günlük Tamamlandı İşaretleme
+- Her alışkanlık kartında yuvarlak bir "Tamamla" butonu bulunur.
+- Butona tıklandığında o gün için tamamlandı olarak kaydedilir.
+- Aynı gün içinde ikinci kez tıklanamaz; buton "Tamamlandı" olarak deaktive olur.
+- Hata mesajı: "Bu alışkanlık bugün zaten tamamlandı."
+- Başarı durumu: Kartın arka planı hafif yeşile döner; streak sayacı +1 artar.
+
+### 4.3 Streak Sayacı Gösterimi
+- Her kartta büyük, vurgulu bir sayaç gösterilir: "5 Gün" formatında.
+- Ardışık gün hesaplaması: Son tamamlanma tarihleri kontrol edilerek art arda kaç gün tamamlandığı sayılır.
+- Eğer bir gün atlanırsa streak sıfırlanır ve "0 Gün" gösterilir.
+- En yüksek streak (rekor) ayrıca küçük bir rozetle gösterilebilir.
+
+### 4.4 Alışkanlık Silme
+- Her kartın sağ üst köşesinde çöp kutusu ikonu (Lucide Trash2) bulunur.
+- Tıklandığında onay modal'ı açılır.
+- Onay mesajı: "Bu alışkanlığı silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+- Onay butonu: "Evet, Sil"; iptal butonu: "Vazgeç".
+- Silme sonrası liste güncellenir; localStorage'dan kaldırılır.
+
+### 4.5 localStorage Yönetimi
+- Veri anahtarı: `smoke-ritim-habits`
+- localStorage'a JSON array olarak yazılır; okunurken parse edilir.
+- Uygulama açıldığında localStorage'dan veri çekilir; boşsa boş durum gösterilir.
+- localStorage yazma hatası durumunda kullanıcıya uyarı: "Verileriniz kaydedilemedi. Tarayıcı ayarlarınızı kontrol edin."
+
+### 4.6 Boş Durum (Empty State)
+- Hiç alışkanlık yoksa Stitch temalı bir illüstrasyon alanı ve mesaj gösterilir.
+- Mesaj: "Henüz bir alışkanlık eklemediniz. Başlamak için yukarıdaki alana yazın!"
+- CTA: Input alanı vurgulu şekilde gösterilir.
+
+## 5. Veri Modeli
+
+### 5.1 Habit (Alışkanlık) Entity
+
+```typescript
+interface Habit {
+  id: string;               // UUID v4 (crypto.randomUUID veya nanoid)
+  name: string;             // Alışkanlık adı (max 50 karakter)
+  streak: number;           // Mevcut ardışık gün sayısı
+  bestStreak: number;       // Tüm zamanların en yüksek streak'i
+  completedDates: string[]; // ISO 8601 tarih dizisi (YYYY-MM-DD)
+  createdAt: string;        // ISO 8601 oluşturma tarihi
+}
+```
+
+### 5.2 localStorage Şeması
+
+```
+Key: smoke-ritim-habits
+Value: Habit[] (JSON string)
+```
+
+- Hiç veri yoksa `[]` (boş array) döner.
+- Her okuma/yazma işlemi `JSON.parse()` / `JSON.stringify()` ile yapılır.
+- Hatalı JSON durumunda varsayılan `[]` kullanılır ve hata konsola yazılır.
+
+## 6. UI/UX Gereksinimleri
+
+### 6.1 Design System Seçimi
+
+- **Aesthetic:** playful (Stitch karakterine sadık; sevimli, yuvarlak, neşeli)
+- **Renk Paleti:**
+  - Primary: `#3B82F6` (Tailwind blue-500, Stitch mavisine yakın)
+  - Secondary: `#06B6D4` (Tailwind cyan-500)
+  - Background: `#F0F9FF` (Çok açık mavi-beyaz)
+  - Surface: `#FFFFFF` (Kart arka planları)
+  - Text Primary: `#1E293B` (Tailwind slate-800)
+  - Text Secondary: `#64748B` (Tailwind slate-500)
+  - Border: `#E2E8F0` (Tailwind slate-200)
+  - Success: `#22C55E` (Tailwind green-500, tamamlama durumu)
+  - Error: `#EF4444` (Tailwind red-500, silme/hata durumu)
+  - Warning: `#F59E0B` (Tailwind amber-500)
+- **Tipografi:**
+  - Heading: `Inter` (font-weight 700-800)
+  - Body: `Inter` (font-weight 400-500)
+- **Icon Library:** Lucide React (tüm ikonlar buradan; emoji asla kullanılmaz)
+
+### 6.2 Spacing & Components
+
+- **Spacing Scale:** 4, 8, 12, 16, 24, 32, 48, 64 px (Tailwind spacing sistemi)
+- **Border Radius:**
+  - Kartlar: `16px` (`rounded-2xl`)
+  - Butonlar: `12px` (`rounded-xl`)
+  - Input: `8px` (`rounded-lg`)
+  - Tamamla butonu: `9999px` (`rounded-full`, yuvarlak)
+- **Shadow Tanımları:**
+  - Kart: `0 4px 6px -1px rgba(59, 130, 246, 0.1), 0 2px 4px -1px rgba(59, 130, 246, 0.06)` (yumuşak mavi gölge)
+  - Modal: `0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)`
+- **Buton Pattern'leri:**
+  - Primary: `bg-blue-500 text-white hover:bg-blue-600`
+  - Success/Tamamla: `bg-green-500 text-white hover:bg-green-600`
+  - Danger/Sil: `bg-red-500 text-white hover:bg-red-600`
+  - Ghost: `bg-transparent text-slate-500 hover:bg-slate-100`
+- **Kart Pattern'i:** Beyaz arka plan, yuvarlak köşeler, mavi gölge, üst kısımda alışkanlık adı, ortada büyük streak sayacı, altta tamamla butonu, sağ üstte sil ikonu.
+- **Input Pattern'i:** Tam genişlik, hafif border, focus'da mavi ring (`focus:ring-2 focus:ring-blue-500 focus:border-blue-500`)
+
+## 7. Non-Functional Requirements
+
+### 7.1 Performans
+- İlk yükleme süresi: < 2 saniye (3G bağlantısında bile).
+- Etkileşim süresi: Buton tıklamasından UI güncellemesine < 50ms.
+- Bundle size hedefi: < 150 KB (gzip) — React + Tailwind + Lucide minified.
+- localStorage okuma/yazma: < 10ms.
+
+### 7.2 Erişilebilirlik (WCAG 2.1 AA)
+- Tüm interaktif elementler klavye ile erişilebilir (Tab sıralaması mantıklı).
+- Screen reader uyumlu: Tüm butonlarda `aria-label`, kartlarda `role="article"`, modal'da `role="dialog"` ve `aria-modal="true"`.
+- Kontrast oranı: Metin >= 4.5:1, büyük metin >= 3:1.
+- Focus state: Tüm buton ve input'larda görünür `focus-visible:ring-2 focus-visible:ring-blue-500`.
+- Touch hedefleri: Minimum 44x44 px; tüm butonlar ve ikonlar bu boyuta uyarlanır.
+- Animasyonlar: `prefers-reduced-motion` medya sorgusuna saygılı; animasyonu azalt veya kaldır.
+
+### 7.3 Tarayıcı Desteği
+- Chrome 90+, Firefox 88+, Safari 14+, Edge 90+.
+- iOS Safari 14+, Android Chrome 90+.
+- Responsive aralık: 320px (min mobil) → 1920px (max masaüstü).
+- Mobil görünüm: Dikey kart listesi, tam genişlik input.
+- Tablet/Masaüstü: Grid layout (2-3 sütun), ortalanmış maksimum container genişliği (max-w-4xl).
+
+## 8. Proje Yapısı
+
+```
+smoke-ritim-0428125901/
+├── src/
+│   ├── components/
+│   │   ├── HabitCard.tsx          # Tek alışkanlık kartı
+│   │   ├── HabitList.tsx          # Kart listesi ve grid layout
+│   │   ├── AddHabitForm.tsx       # Yeni alışkanlık input form'u
+│   │   ├── EmptyState.tsx         # Boş durum ekranı
+│   │   ├── DeleteModal.tsx        # Silme onay modal'ı
+│   │   └── StreakBadge.tsx        # Streak sayaç bileşeni
+│   ├── hooks/
+│   │   ├── useLocalStorage.ts     # localStorage okuma/yazma hook'u
+│   │   └── useHabits.ts           # Alışkanlık state yönetimi (reducer)
+│   ├── types/
+│   │   └── habit.ts               # Habit interface
+│   ├── utils/
+│   │   ├── streakCalculator.ts    # Ardışık gün hesaplama
+│   │   ├── dateHelpers.ts         # Tarih formatlama/karşılaştırma
+│   │   └── idGenerator.ts         # UUID üretimi
+│   ├── App.tsx                    # Ana uygulama (tek sayfa)
+│   └── main.tsx                   # Vite entry point
+├── index.html
+├── vite.config.ts
+├── tailwind.config.js
+├── tsconfig.json
+└── package.json
+```
+
+## 9. Window State (Testing / Dogfood)
+
+```typescript
+window.app = {
+  state: 'idle' | 'loading' | 'error',
+  habitsCount: number,
+  todayCompletedCount: number,
+  storageStatus: 'ok' | 'full' | 'unavailable'
+}
+```
+
+- `state`: Uygulamanın genel durumu. localStorage okunurken `'loading'`, hata durumunda `'error'`.
+- `habitsCount`: Mevcut alışkanlık sayısı.
+- `todayCompletedCount`: Bugün tamamlanmış alışkanlık sayısı.
+- `storageStatus`: localStorage durumu; `'full'` durumunda kullanıcı uyarılır.
+
+## 10. Ekranlar
+
+| # | Ekran Adı | Tür | Açıklama |
+|---|-----------|-----|----------|
+| 1 | Ana Sayfa | dashboard | Alışkanlık ekleme formu, kart grid/liste, streak sayaçları. Tüm CRUD'un yapıldığı tek sayfa. |
+| 2 | Boş Durum | empty_state | Hiç alışkanlık yokken gösterilen Stitch temalı eğlenceli mesaj ve CTA. |
+| 3 | Silme Onay Modal'ı | modal | Alışkanlık silinmeden önce açılan onay penceresi; geri alınamaz uyarısı. |
+| 4 | Hata Durumu | error | localStorage okunamaz veya yazılamaz durumunda gösterilen hata mesajı ve yeniden dene butonu. |
+
+Generate a SEPARATE screen design for EVERY page, view, modal, dialog, tab panel, and settings screen described in this PRD. Do NOT skip ANY screen — even if it seems minor.
+
+MANDATORY SCREENS:
+- If the PRD mentions "settings" or "ayarlar" → generate a Settings screen
+- If the PRD mentions tabs or bottom navigation → generate EACH tab view as a separate screen
+- If the PRD mentions modals (statistics, help, share, confirmation) → generate each as a separate screen
+- If the PRD mentions error states, empty states, loading states → generate those too
+- Generate at least as many screens as there are distinct views/pages/modals in the PRD
+
+All visible text must be in Turkish. Use a dark, modern theme.

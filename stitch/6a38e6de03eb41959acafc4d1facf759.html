@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Smoke Ritim - Boş Durum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffeefb",
+                        "on-primary-container": "#002150",
+                        "secondary-fixed": "#65e1ff",
+                        "surface-bright": "#eff8fe",
+                        "surface-container": "#dfeaf1",
+                        "tertiary-dim": "#7b2f85",
+                        "tertiary-fixed-dim": "#e28ce9",
+                        "surface-variant": "#d1dfe7",
+                        "primary": "#0057bd",
+                        "error": "#b31b25",
+                        "primary-fixed": "#6e9fff",
+                        "tertiary": "#893c92",
+                        "error-dim": "#9f0519",
+                        "tertiary-container": "#f199f7",
+                        "on-secondary-fixed": "#003a45",
+                        "secondary": "#006576",
+                        "primary-fixed-dim": "#5391ff",
+                        "inverse-surface": "#070f13",
+                        "on-background": "#273034",
+                        "primary-container": "#6e9fff",
+                        "on-tertiary-fixed-variant": "#681c73",
+                        "background": "#eff8fe",
+                        "on-tertiary-fixed": "#3e0047",
+                        "on-primary-fixed": "#000000",
+                        "error-container": "#fb5151",
+                        "secondary-dim": "#005867",
+                        "outline-variant": "#a5aeb4",
+                        "primary-dim": "#004ca6",
+                        "on-error": "#ffefee",
+                        "outline": "#6f787d",
+                        "tertiary-fixed": "#f199f7",
+                        "surface": "#eff8fe",
+                        "surface-container-highest": "#d1dfe7",
+                        "on-surface": "#273034",
+                        "on-tertiary-container": "#5e106a",
+                        "inverse-on-surface": "#959ea4",
+                        "on-secondary-fixed-variant": "#005969",
+                        "surface-tint": "#0057bd",
+                        "surface-container-low": "#e8f2f9",
+                        "surface-container-high": "#d8e4ec",
+                        "secondary-container": "#65e1ff",
+                        "on-secondary-container": "#004f5d",
+                        "on-surface-variant": "#545d62",
+                        "surface-dim": "#c8d7df",
+                        "on-error-container": "#570008",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-primary-fixed-variant": "#002a62",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#4d8eff",
+                        "on-secondary": "#def7ff",
+                        "on-primary": "#f0f2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-40 flex justify-between items-center w-full px-8 py-6 bg-[#eff8fe]/80 dark:bg-slate-950/80 backdrop-blur-xl rounded-b-[3rem]">
+<div class="text-[#0057bd] dark:text-[#6e9fff] font-['Inter'] font-extrabold tracking-tight text-2xl italic">Smoke Ritim</div>
+<button class="hover:bg-[#e8f2f9] dark:hover:bg-slate-800 transition-colors p-2 rounded-full flex items-center justify-center text-[#0057bd] dark:text-[#6e9fff]">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col px-6 pt-32 pb-40 max-w-4xl mx-auto w-full">
+<!-- Action Area (Input) -->
+<section class="bg-surface-container-lowest rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center mb-12 shadow-[0_8px_32px_rgba(0,87,189,0.03)] relative z-10">
+<div class="flex-1 w-full relative group">
+<div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-primary">
+<span class="material-symbols-outlined">edit_square</span>
+</div>
+<input class="w-full bg-surface-container-low text-on-surface rounded-xl py-5 pl-16 pr-6 outline-none placeholder:text-outline-variant font-body text-lg focus:ring-4 focus:ring-primary/10 transition-all border-none" placeholder="Yeni Alışkanlık Ekle..." type="text"/>
+</div>
+<button class="w-full md:w-auto bg-gradient-to-br from-primary to-primary-container text-on-primary font-label text-sm uppercase font-bold tracking-widest rounded-xl px-10 py-5 flex items-center justify-center gap-3 hover:opacity-90 active:scale-95 transition-all shadow-[0_8px_24px_rgba(0,87,189,0.2)]">
+<span class="material-symbols-outlined">add</span>
+                Başla
+            </button>
+</section>
+<!-- Empty State Hero -->
+<section class="flex-1 flex flex-col items-center justify-center text-center max-w-lg mx-auto">
+<!-- Asymmetric Illustration Container -->
+<div class="relative w-64 h-64 md:w-80 md:h-80 mb-10 rounded-[3rem_4rem_2rem_3rem] bg-surface-container-low flex items-center justify-center overflow-hidden transform rotate-2 shadow-[inset_0_-10px_20px_rgba(0,87,189,0.05)]">
+<img alt="No habits illustration" class="w-[120%] h-[120%] object-cover object-center transform -rotate-2 opacity-90 mix-blend-multiply" data-alt="Playful, curious little blue alien creature, stitch-like aesthetic, looking thoughtfully at a floating blank paper, soft pastel 3D render style, bright clean background, friendly and encouraging mood" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACiHERweSzdohW-92rwDEynegurzr9Y7wYokKwQJ8lE-tG-rCMltOnwjaEVtpiNq2GOigxyR_V0a2FjpOD3ae8-TtOi6qyIzLTU91d88rD6mQWNHBMAc5aNiWUO1Jw6G4gBRFJmEH-EyAbne3AVC9QeaF-Ylc7p31KOfBChEd-WXOnmE10-WxqZ6kunJENcPN3kZFGThNXRBMp5okf2eKd5sUq_-95L6c0TyIiyXfybDcPPkPW1qfnZP7euSl9Wkfy4uFRglJLr4c"/>
+<!-- Decorative Element -->
+<div class="absolute -top-4 -right-4 w-12 h-12 bg-secondary-fixed rounded-full blur-xl opacity-60"></div>
+<div class="absolute -bottom-6 -left-6 w-20 h-20 bg-primary-container rounded-full blur-2xl opacity-40"></div>
+</div>
+<!-- Typography Hierarchy -->
+<h1 class="font-headline text-4xl md:text-[2.5rem] font-extrabold text-primary mb-6 leading-tight tracking-tight">
+                Henüz bir alışkanlık<br/>eklemediniz.
+            </h1>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed max-w-sm px-4">
+                Yeni bir başlangıç için yukarıdaki alana ilk alışkanlığını yaz!
+            </p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-[3rem] shadow-[0px_0px_32px_rgba(0,87,189,0.06)] bg-white/70 dark:bg-slate-900/70 backdrop-blur-[20px] flex justify-around items-center px-4 pb-8 pt-4 md:hidden">
+<!-- Active Tab: Bugün -->
+<button class="flex flex-col items-center justify-center bg-[#65e1ff] dark:bg-[#0057bd] text-[#273034] dark:text-white rounded-[2rem] px-6 py-2 scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event_upcoming</span>
+<span class="font-['Inter'] text-[12px] font-bold uppercase tracking-wider mt-1">Bugün</span>
+</button>
+<!-- Inactive Tabs -->
+<button class="flex flex-col items-center justify-center text-[#a5aeb4] p-2 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-['Inter'] text-[12px] font-bold uppercase tracking-wider mt-1">Ritmi</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#a5aeb4] p-2 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">insert_chart</span>
+<span class="font-['Inter'] text-[12px] font-bold uppercase tracking-wider mt-1">İstatistik</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#a5aeb4] p-2 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Inter'] text-[12px] font-bold uppercase tracking-wider mt-1">Ayarlar</span>
+</button>
+</nav>
+</body></html>
